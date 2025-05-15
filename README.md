@@ -74,6 +74,7 @@ country_info_system/
 │   ├── serializers.py
 │   ├── urls.py
 │   ├── views.py
+    ├── web_views.py
 │   ├── management/
 │   │   └── commands/
 │   │       └── fetch_countries.py
