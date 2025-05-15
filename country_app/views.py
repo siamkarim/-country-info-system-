@@ -8,7 +8,15 @@ from .serializers import CountrySerializer, CountryDetailSerializer, CountryCrea
 
 class CountryViewSet(viewsets.ModelViewSet):
     """
-    API endpoint for viewing and editing country data
+        
+    API endpoint that allows countries to be viewed or edited.
+    
+    retrieve:
+    Return a specific country.
+    
+    list:
+    Return all countries, with optional filtering.
+    
     """
     queryset = Country.objects.all().order_by('name_common')
     permission_classes = [IsAuthenticatedOrReadOnly]

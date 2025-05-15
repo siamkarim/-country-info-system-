@@ -1,0 +1,118 @@
+{% extends 'country_app/base.html' %}
+
+{% block title %}Country List | Country Information System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h1>Countries</h1>
+    </div>
+    <div class="col-md-6">
+        <form method="get" action="{% url 'country_list' %}" class="d-flex search-container ms-auto">
+            <input class="form-control me-2" type="search" placeholder="Search countries..." name="query" value="{{ query }}">
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+        </form>
+    </div>
+</div>
+
+{% if page_obj %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Flag</th>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Capital</th>
+                <th>Population</th>
+                <th>Timezone</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for country in page_obj %}
+            <tr>
+                <td>
+                    {% if country.flags.png %}
+                    <img src="{{ country.flags.png }}" alt="{{ country.name_common }} flag" class="country-flag">
+                    {% else %}
+                    <span class="text-muted">No flag</span>
+                    {% endif %}
+                </td>
+                <td>{{ country.name_common }}</td>
+                <td>{{ country.cca2 }}</td>
+                <td>
+                    {% if country.capital %}
+                    {{ country.capital.0 }}
+                    {% else %}
+                    <span class="text-muted">N/A</span>
+                    {% endif %}
+                </td>
+                <td>{{ country.population|stringformat:"d" }}</td>
+                <td>
+                    {% if country.timezones %}
+                    {{ country.timezones.0 }}
+                    {% if country.timezones|length > 1 %}
+                    <span class="badge bg-info">+{{ country.timezones|length|add:"-1" }}</span>
+                    {% endif %}
+                    {% else %}
+                    <span class="text-muted">N/A</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'country_detail' country_id=country.cca2 %}" class="btn btn-sm btn-primary">Details</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+<nav aria-label="Country pagination">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1{% if query %}&query={{ query }}{% endif %}">&laquo; First</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&query={{ query }}{% endif %}">Previous</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">&laquo; First</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" href="#">Previous</a>
+        </li>
+        {% endif %}
+
+        <li class="page-item active">
+            <span class="page-link">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+        </li>
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query %}&query={{ query }}{% endif %}">Next</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if query %}&query={{ query }}{% endif %}">Last &raquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">Next</a>
+        </li>
+        <li class="page-item disabled">
+            <a class="page-link" href="#">Last &raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% else %}
+<div class="alert alert-info">
+    No countries found. {% if query %}Try a different search term.{% endif %}
+</div>
+{% endif %}
+{% endblock %}

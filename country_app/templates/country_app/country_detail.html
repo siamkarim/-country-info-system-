@@ -1,0 +1,191 @@
+{% extends 'country_app/base.html' %}
+
+{% block title %}{{ country.name_common }} | Country Information System{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'country_list' %}">Countries</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ country.name_common }}</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">{{ country.name_common }}</h3>
+            </div>
+            <div class="card-body text-center">
+                {% if country.flags.png %}
+                <img src="{{ country.flags.png }}" alt="{{ country.name_common }} flag" class="detail-flag mb-3">
+                {% else %}
+                <div class="alert alert-warning">No flag available</div>
+                {% endif %}
+                <h4>{{ country.name_official }}</h4>
+                <p class="text-muted">{{ country.cca2 }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Country Information</h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Capital</h5>
+                                <p>{% if country.capital %}{{ country.capital.0 }}{% else %}N/A{% endif %}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Population</h5>
+                                <p>{{ country.population|stringformat:"d" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Region</h5>
+                                <p>{{ country.region|default:"N/A" }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Subregion</h5>
+                                <p>{{ country.subregion|default:"N/A" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <h5>Languages</h5>
+                        {% if languages %}
+                        <ul class="list-group">
+                            {% for code, language in languages.items %}
+                            <li class="list-group-item">{{ language }} ({{ code }})</li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p>No language information available</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <h5>Timezones</h5>
+                        {% if country.timezones %}
+                        <ul class="list-group">
+                            {% for timezone in country.timezones %}
+                            <li class="list-group-item">{{ timezone }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p>No timezone information available</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <h5>Currencies</h5>
+                        {% if currencies %}
+                        <ul class="list-group">
+                            {% for code, currency in currencies.items %}
+                            <li class="list-group-item">{{ currency.name }} ({{ code }}) - Symbol: {{ currency.symbol|default:'N/A' }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p>No currency information available</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3 class="mb-0">Countries in the Same Region</h3>
+            </div>
+            <div class="card-body">
+                {% if same_region_countries %}
+                <div class="list-group">
+                    {% for same_region_country in same_region_countries %}
+                    <a href="{% url 'country_detail' country_id=same_region_country.cca2 %}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ same_region_country.name_common }}</h5>
+                            <small>{{ same_region_country.cca2 }}</small>
+                        </div>
+                        <p class="mb-1">
+                            Region: {{ same_region_country.region }} | 
+                            Population: {{ same_region_country.population|stringformat:"d" }}
+                        </p>
+                    </a>
+                    {% endfor %}
+                </div>
+                <div class="mt-3">
+                    <a href="{% url 'country_list' %}?query={{ country.region }}" class="btn btn-outline-success">See All in {{ country.region }}</a>
+                </div>
+                {% else %}
+                <p>No countries in the same region available</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h3 class="mb-0">Location</h3>
+            </div>
+            <div class="card-body">
+                {% if country.latlng and country.latlng|length >= 2 %}
+                <p>Latitude: {{ country.latlng.0 }}</p>
+                <p>Longitude: {{ country.latlng.1 }}</p>
+                <div id="map" style="height: 300px; width: 100%;"></div>
+                {% else %}
+                <p>No location information available</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% if country.latlng and country.latlng|length >= 2 %}
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the map
+        var map = L.map('map').setView([{{ country.latlng.0 }}, {{ country.latlng.1 }}], 5);
+        
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // Add marker for the country
+        L.marker([{{ country.latlng.0 }}, {{ country.latlng.1 }}])
+            .addTo(map)
+            .bindPopup('{{ country.name_common }}')
+            .openPopup();
+    });
+</script>
+{% endif %}
+{% endblock %}
