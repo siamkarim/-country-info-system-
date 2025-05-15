@@ -1,12 +1,12 @@
 ## Country Information System
-    This Django application allows users to browse, search, and manage country information fetched from the REST Countries API.
+This Django application allows users to browse, search, and manage country information fetched from the REST Countries API.
 
 ### Features
-    Fetch and store country data from REST Countries API
-    RESTful API endpoints for country data manipulation
-    Web interface for displaying and searching countries
-    Authentication system to secure the application
-    Interactive API documentation with Swagger and ReDoc
+Fetch and store country data from REST Countries API
+RESTful API endpoints for country data manipulation
+Web interface for displaying and searching countries
+Authentication system to secure the application
+Interactive API documentation with Swagger and ReDoc
     
 ### Setup Instructions
 ### Prerequisites
@@ -87,7 +87,7 @@ country_info_system/
 ### API Endpoints
 
 Endpoint	Method	Description
-```
+
 /api/countries/	GET	List all countries
 /api/countries/	POST	Create a new country
 /api/countries/<str:pk>/	GET	Get details of a specific country
@@ -97,7 +97,7 @@ Endpoint	Method	Description
 /api/countries/by-language/<str:language>/	GET	List countries that speak a specific language
 /api/countries/search/<str:search_term>/	GET	Search for countries by name
 
-````
+
 API Documentation
 The project includes interactive API documentation:
 
