@@ -14,28 +14,31 @@
     pip (Python package manager)
     Git
 
-Installation Steps
+### Installation Steps
 Clone the repository:
 ```
 git clone https://github.com/siamkarim/-country-info-system-.git
 cd -country-info-system-
 ```
-Create and activate a virtual environment:
+### Create and activate a virtual environment:
 ```
 python -m venv venv
 source venv/bin/activate  # On Windows, use: venv\Scripts\activate
 ```
-Install dependencies:
+### Install dependencies:
 ```
 pip install -r requirements.txt
 
 ```
-Set up the database:
-````
-python manage.py migrate
+### Set up the database:
 
+````
+python manage.py makemigrations
+python manage.py migrate
 ```
-Create a superuser for admin access:
+
+### Create a superuser for admin access:
+
 ```
 python manage.py createsuperuser
 ```
