@@ -9,14 +9,14 @@ class Country(models.Model):
     cca2 = models.CharField(max_length=2, primary_key=True)
     name_common = models.CharField(max_length=255)
     name_official = models.CharField(max_length=255)
-    capital = models.JSONField(null=True, blank=True)  # Using JSONField as capital can be a list
+    capital = models.JSONField(null=True, blank=True)  
     region = models.CharField(max_length=100, null=True, blank=True)
     subregion = models.CharField(max_length=100, null=True, blank=True)
     population = models.BigIntegerField(default=0)
     languages = models.JSONField(null=True, blank=True)
     timezones = models.JSONField(null=True, blank=True)
     flags = models.JSONField(null=True, blank=True)
-    latlng = models.JSONField(null=True, blank=True)  # Latitude and longitude as a list
+    latlng = models.JSONField(null=True, blank=True) 
     borders = models.JSONField(null=True, blank=True)
     currencies = models.JSONField(null=True, blank=True)
     continents = models.JSONField(null=True, blank=True)
