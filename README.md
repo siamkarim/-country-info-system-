@@ -86,7 +86,7 @@ country_info_system/
 └── requirements.txt
 ```
 ### API Endpoints
-
+```
 Endpoint	Method	Description
 
 /api/countries/	GET	List all countries
@@ -97,7 +97,7 @@ Endpoint	Method	Description
 /api/countries/<str:pk>/same-region/	GET	List countries in the same region
 /api/countries/by-language/<str:language>/	GET	List countries that speak a specific language
 /api/countries/search/<str:search_term>/	GET	Search for countries by name
-
+```
 
 API Documentation
 The project includes interactive API documentation:
