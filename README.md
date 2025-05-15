@@ -60,7 +60,7 @@ http://127.0.0.1:8000/
 ```
 country_info_system/
 ├── manage.py
-├── country_project/
+├── country_info_system/
 │   ├── __init__.py
 │   ├── settings.py
 │   ├── urls.py
