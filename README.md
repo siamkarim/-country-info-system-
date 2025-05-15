@@ -17,8 +17,8 @@ Interactive API documentation with Swagger and ReDoc
 ### Installation Steps
 Clone the repository:
 ```
-git clone https://github.com/siamkarim/-country-info-system-.git
-cd -country-info-system-
+git clone https://github.com/siamkarim/country-info-system.git
+cd country-info-system
 ```
 ### Create and activate a virtual environment:
 ```
