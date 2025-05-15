@@ -57,6 +57,7 @@ Access the application
 http://127.0.0.1:8000/
 ```
 ### Project Structure
+```
 country_info_system/
 ├── manage.py
 ├── country_project/
@@ -83,7 +84,7 @@ country_info_system/
 │           ├── country_detail.html
 │           └── login.html
 └── requirements.txt
-
+```
 ### API Endpoints
 
 Endpoint	Method	Description
